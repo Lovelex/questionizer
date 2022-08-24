@@ -1,29 +1,48 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+
+import Home from '@/views/Home'
+
+import NewQuestion from '@/views/question/New'
+import EditQuestion from '@/views/question/Edit'
+import ShowQuestion from '@/views/question/Show'
+
+import Settings from '@/views/Settings'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
-
 const router = new VueRouter({
-  mode: 'history',
+  mode: process.env.IS_ELECTRON ? 'hash' : 'history',
   base: process.env.BASE_URL,
-  routes
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: Home
+    },
+    {
+      path: '/question/new',
+      name: 'newQuestion',
+      component: NewQuestion
+    },
+    {
+      path: '/question/edit/:id',
+      name: 'editQuestion',
+      component: EditQuestion,
+      props: true
+    },
+    {
+      path: '/question/show/:id',
+      name: 'showQuestion',
+      component: ShowQuestion,
+      props: true
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: Settings
+    },
+  ]
 })
 
 export default router
