@@ -4,12 +4,12 @@ export function getParsedStorage(data) {
   return JSON.parse(localStorage.getItem(data))
 }
 
-export function saveStringifiedStorage(key, value) {
+export function setStringifiedStorage(key, value) {
   return localStorage.setItem(key, JSON.stringify(value))
 }
 
 export function saveItems(items) {
-  saveStringifiedStorage(ITEMS, JSON.stringify(items))
+  return setStringifiedStorage(ITEMS, items)
 }
 
 export function loadItems() {

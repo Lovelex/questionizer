@@ -2,19 +2,30 @@
   <v-card class="pa-4">
     <h1 class="mb-4">Editar pergunta</h1>
     <span v-if="!item">Não foi possível encontrar essa pergunta.</span>
-    <div v-if="item">
-      <v-text-field v-model="item.title" label="Título" outlined />
-      <v-text-field v-model="item.p1" label="Resposta 1" outlined />
-      <v-text-field v-model="item.p2" label="Resposta 2" outlined />
-      <v-text-field v-model="item.p3" label="Resposta 3" outlined />
-      <v-text-field v-model="item.p4" label="Resposta 4" outlined />
+    <v-form v-if="item">
+      <v-text-field v-model="item.title" label="Título " outlined />
+      <v-radio-group v-model="item.correctAnswer">
+        <div
+          v-for="(answer, index) in item.answers"
+          :key="index"
+          class="d-flex align-center"
+        >
+          <v-radio :value="answer.id" />
+          <v-text-field
+            v-model="item.answers[index].text"
+            :label="`Resposta ${index + 1}`"
+            outlined
+          />
+        </div>
+      </v-radio-group>
+      {{ item }}
       <div class="d-flex justify-end">
         <v-btn @click="submit" small color="warning">
           <span>Editar</span>
           <v-icon right>mdi-pencil</v-icon>
         </v-btn>
       </div>
-    </div>
+    </v-form>
   </v-card>
 </template>
 
@@ -43,6 +54,8 @@ export default {
       const newItems = items.filter(item => item.id !== this.item.id)
 
       saveItems([...newItems, newItem])
+
+      this.$router.push({ name: 'home' })
     },
   },
   mounted() {

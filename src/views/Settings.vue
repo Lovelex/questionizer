@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { getParsedStorage, saveStringifiedStorage } from '@/utils'
+import { getParsedStorage, setStringifiedStorage } from '@/utils'
 
 export default {
   data: () => ({
@@ -22,7 +22,7 @@ export default {
   methods: {
     toggleDarkMode() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
-      saveStringifiedStorage("isDark", this.$vuetify.theme.dark)
+      setStringifiedStorage("isDark", this.$vuetify.theme.dark)
     },
   },
   mounted() {
