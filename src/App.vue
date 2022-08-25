@@ -16,11 +16,14 @@ export default {
     if (!localStorage.getItem("items")) {
       localStorage.setItem("items", "[]");
     }
-      this.$vuetify.theme.dark = JSON.parse(localStorage.getItem("isDark"));
 
+    this.$vuetify.theme.dark = JSON.parse(localStorage.getItem("isDark"));
   },
 };
 </script>
 
 <style>
+p {
+  margin: 0 !important;
+}
 </style>

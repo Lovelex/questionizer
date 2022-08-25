@@ -3,17 +3,12 @@
     <div style="max-width: 400px">
       <v-text-field
         label="Buscar pergunta..."
+        v-model="search"
         dense
         outlined
         rounded
         append-icon="mdi-magnify"
       />
-    </div>
-
-    <div class="mb-4">
-      <span class="d-block">Ordenar por:</span>
-      <v-chip class="mr-2">Acertos</v-chip>
-      <v-chip>Erros</v-chip>
     </div>
 
     <v-card class="pa-4">
@@ -23,27 +18,65 @@
           <v-icon right>mdi-plus</v-icon>
         </v-btn>
       </div>
-      <v-card :to="{ name: 'editQuestion', params: { id: item.id } }" v-for="item in items" :key="item.id" class="pa-4 mb-4">
-        <v-chip class="mb-2">{{ item.fenquency }}</v-chip>
 
-        <p>{{ item.title }}</p>
+      <EmptyQuestionImage v-if="!items.length"/>
+      <v-card
+        :to="{ name: 'editQuestion', params: { id: item.id } }"
+        v-for="item in newItems"
+        :key="item.id"
+        class="pa-2 mb-4"
+      >
+        <div class="d-flex">
+          <div class="mr-4 caption">
+            <v-icon class="mr-1" x-small> mdi-clock </v-icon>
+            <span>{{ milisToDate(item.createdAt) }}</span>
+          </div>
+          <div class="caption">
+            <v-icon class="mr-1" x-small> mdi-pencil </v-icon>
+            <span>{{ milisToDate(item.updatedAt) }}</span>
+          </div>
+        </div>
+        <div>
+          <p>{{ item.title }}</p>
+        </div>
       </v-card>
     </v-card>
   </div>
 </template>
 
 <script>
+import { milisToDate, loadItems } from "@/utils";
+import EmptyQuestionImage from '@/components/home/EmptyQuestionImage.vue';
+
 export default {
+  components: { EmptyQuestionImage },
   data: () => ({
+    search: "",
     items: [],
   }),
+  computed: {
+    newItems() {
+      return this.items.filter((item) => {
+        return item.title.toLowerCase().includes(this.search.toLowerCase());
+      });
+    },
+  },
   methods: {
+    milisToDate,
     loadItems() {
-      this.items = JSON.parse(localStorage.getItem("items"))
-    }
+      this.items = loadItems().sort((a, b) => {
+        if (a.updatedAt < b.updatedAt) {
+          return 1;
+        }
+        if (a.updatedAt > b.updatedAt) {
+          return -1;
+        }
+        return 0;
+      });
+    },
   },
   mounted() {
-    this.loadItems()
-  }
+    this.loadItems();
+  },
 };
 </script>
