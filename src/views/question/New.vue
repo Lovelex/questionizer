@@ -1,52 +1,22 @@
 <template>
   <v-card class="pa-4">
     <h1 class="mb-4">Nova pergunta</h1>
-    <v-form>
-      <v-text-field v-model="item.title" label="Título " outlined />
-      <v-radio-group v-model="item.correctAnswer">
-        <div
-          v-for="(answer, index) in item.answers"
-          :key="index"
-          class="d-flex align-center"
-        >
-          <v-radio :value="answer.id" />
-          <v-text-field
-            v-model="item.answers[index].text"
-            :label="`Resposta ${index + 1}`"
-            outlined
-          />
-        </div>
-      </v-radio-group>
-      <div class="d-flex justify-end">
-        <v-btn @click="submit" small color="primary">
-          <span>Adicionar</span>
-          <v-icon right>mdi-plus</v-icon>
-        </v-btn>
-      </div>
-    </v-form>
+    <QuestionForm @onSubmit="submit" />
   </v-card>
 </template>
 
 <script>
-import { generateId, saveItems, loadItems } from "@/utils";
+import { saveItems, loadItems, required, generateId } from "@/utils";
+import QuestionForm from "@/components/QuestionForm.vue";
 
 export default {
-  data: () => ({
-    item: {
-      title: "",
-      answers: [
-        { text: "", id: generateId(8) },
-        { text: "", id: generateId(8) },
-        { text: "", id: generateId(8) },
-        { text: "", id: generateId(8) },
-      ],
-      correctAnswer: null,
-    },
-  }),
+  components: { QuestionForm },
+
   methods: {
-    submit() {
+    required,
+    submit(item) {
       const newItem = {
-        ...this.item,
+        ...item,
         fenquency: "low",
         id: generateId(),
         createdAt: Date.now(),
@@ -61,6 +31,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>
