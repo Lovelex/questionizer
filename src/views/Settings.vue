@@ -13,21 +13,21 @@
 </template>
 
 <script>
-import { getParsedStorage, setStringifiedStorage } from '@/utils'
+import { getParsedStorage, setStringifiedStorage } from "@/utils";
 
 export default {
   data: () => ({
-    isDark: false
+    isDark: false,
   }),
   methods: {
     toggleDarkMode() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
-      setStringifiedStorage("isDark", this.$vuetify.theme.dark)
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      setStringifiedStorage("isDark", this.$vuetify.theme.dark);
     },
   },
   mounted() {
-    this.isDark = getParsedStorage("isDark")
-  }
+    this.isDark = getParsedStorage("isDark");
+  },
 };
 </script>
 
